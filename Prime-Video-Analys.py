@@ -1,4 +1,6 @@
 import PySimpleGUI as sg
+import numpy as np
+import matplotlib as plt
 
 # GUI Layout
 sg.set_options(font= 'Consolas 14')
@@ -27,9 +29,9 @@ while True:
         sg.set_options(font= 'Consolas 14')
 
         layout = [
-            [sg.Button('↩',font= 'Consolas 10')],
+            [sg.Button('↩',font= 'Consolas 13')],
             [sg.Text('Infomation om datan och systemet.')],
-            [sg.Text('Detta system är skapat av Simon Ivarsson med uppgiften att hantera data.\nSystemet bygger på en GUI som grafiskt visar datan.\nDatan som används är fiktiv. Det är påhittad data över 2500 Amazon Prime Video användare.\nDatan innehåller bland annat emailadresser, plats, kön och mycket mer.', text_color= "light grey")]
+            [sg.Text('Detta system är skapat av Simon Ivarsson med uppgiften att hantera data.\nSystemet bygger på en GUI som grafiskt visar datan.\nDatan som används är fiktiv.\nDet är påhittad data över 2500 Amazon Prime Video användare.\nDatan innehåller bland annat emailadresser, plats, kön och mycket mer.', text_color= "light grey")]
         ]
 
         window = sg.Window('Information', layout)
@@ -38,6 +40,16 @@ while True:
             event, values = window.read()
             if event == sg.WIN_CLOSED:
                 break
+    
+    if event == 'Tabeller':
+        window.close()
+
+        sg.set_options(font= 'Consolas 14')
+
+        layout = [
+            [sg.Button('↩',font= 'Consolas 13')],
+            [sg.Text('Tabeller över datan')]
+        ]
 
 
 window.close()
