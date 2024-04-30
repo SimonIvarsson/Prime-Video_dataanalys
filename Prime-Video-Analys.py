@@ -1,13 +1,14 @@
 import PySimpleGUI as sg
 import numpy as np
 import matplotlib as plt
+import pandas as pd
 
 # GUI Layout
 sg.set_options(font= 'Consolas 14')
 layout = [
     [sg.Text('Användardata över Amazon Prime Video användare.\nSkapad av Simon Ivarsson.')],
     [sg.Button('Information', expand_x = True)], 
-    [sg.Button('Tabeller', expand_x = True)], 
+    [sg.Button('Dataframes', expand_x = True)], 
     [sg.Button('Grafer', expand_x = True)],
     [sg.Image('Small-img2.png')]
 ]
@@ -41,15 +42,22 @@ while True:
             if event == sg.WIN_CLOSED:
                 break
     
-    if event == 'Tabeller':
+    if event == 'Dataframes':
         window.close()
 
         sg.set_options(font= 'Consolas 14')
 
         layout = [
             [sg.Button('↩',font= 'Consolas 13')],
-            [sg.Text('Tabeller över datan')]
+            [sg.Text('Dataframes')],
+            [sg.Text('Datan över våra användare', text_color= "light grey")],
         ]
 
+        window = sg.Window('Dataframes', layout)
+
+        while True:
+            event, values = window.read()
+            if event == sg.WIN_CLOSED:
+                break
 
 window.close()
