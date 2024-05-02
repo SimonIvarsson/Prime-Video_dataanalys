@@ -10,7 +10,7 @@ layout = [
     [sg.Button('Information', expand_x = True)], 
     [sg.Button('Dataframes', expand_x = True)], 
     [sg.Button('Grafer', expand_x = True)],
-    [sg.Image('Small-img2.png')]
+    [sg.Image('tests.png')]
 ]
 
 # Öppnar GUI
@@ -48,14 +48,15 @@ while True:
         pd.options.display.max_rows = 20
         pd.options.display.max_columns = 6
         df = pd.read_csv("amazon_prime_users.csv")
-
+        new_df = df.drop('Customer Support Interactions',axis=1)
+  
         sg.set_options(font= 'Consolas 14')
 
         layout = [
             [sg.Button('↩',font= 'Consolas 13')],
             [sg.Text('Dataframes')],
             [sg.Text('Datan över våra användare', text_color= "light grey")],
-            [sg.Table(values=df.values.tolist(), headings=df.columns.tolist(), display_row_numbers=True, auto_size_columns=False, col_widths=[20, 10], vertical_scroll_only=True)]
+            [sg.Table(values=new_df.values.tolist(), headings=df.columns.tolist(), display_row_numbers=True, auto_size_columns=False, col_widths=[10, 5], vertical_scroll_only=True)]
         ]
 
         window = sg.Window('Dataframes', layout)
@@ -65,5 +66,4 @@ while True:
             if event == sg.WIN_CLOSED:
                 break
 
-#test
 window.close()
