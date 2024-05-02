@@ -44,6 +44,10 @@ while True:
     
     if event == 'Dataframes':
         window.close()
+        
+        pd.options.display.max_rows = 20
+        pd.options.display.max_columns = 6
+        df = pd.read_csv("amazon_prime_users.csv")
 
         sg.set_options(font= 'Consolas 14')
 
@@ -51,6 +55,7 @@ while True:
             [sg.Button('↩',font= 'Consolas 13')],
             [sg.Text('Dataframes')],
             [sg.Text('Datan över våra användare', text_color= "light grey")],
+            [sg.Table(values=df.values.tolist(), headings=df.columns.tolist(), display_row_numbers=True, auto_size_columns=False, col_widths=[20, 10], vertical_scroll_only=True)]
         ]
 
         window = sg.Window('Dataframes', layout)
@@ -59,5 +64,6 @@ while True:
             event, values = window.read()
             if event == sg.WIN_CLOSED:
                 break
+
 
 window.close()
