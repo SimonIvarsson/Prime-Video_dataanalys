@@ -9,7 +9,7 @@ layout = [
     [sg.Text('Användardata över Amazon Prime Video användare.\nSkapad av Simon Ivarsson.')],
     [sg.Button('Information', expand_x = True)], 
     [sg.Button('Dataframes', expand_x = True)], 
-    [sg.Button('Grafer', expand_x = True)],
+    [sg.Button('Diagram', expand_x = True)],
     [sg.Image('tests.png')]
 ]
 
@@ -76,7 +76,7 @@ while True:
             if event == sg.WIN_CLOSED:
                 break
 
-    if event == 'Grafer':
+    if event == 'Diagram':
         window.close()
 
         sg.set_options(font= 'Consolas 14')
@@ -84,12 +84,11 @@ while True:
         layout = [
             [sg.Button('↩',font= 'Consolas 13')],
             [sg.Text('Visualiserad data.')],
-            [sg.Text('Här är datan visualiserad i olika tabeller / grafer.\nTryck på den information du vill se!', text_color= "light grey")],
-            [sg.Button('Kön'), sg.Button('Device Usage Patterns'), sg.Button()]
-
+            [sg.Text('Här är datan visualiserad i olika tabeller / diagram.\nTryck på den information du vill se!', text_color= "light grey")],
+            [sg.Button('Kön', expand_x= True), sg.Button('Device Usage Patterns', expand_x= True), sg.Button('Favorit genrer', expand_x= True)]
         ]
 
-        window = sg.Window('Grafer', layout)
+        window = sg.Window('Diagram', layout)
 
         while True:
             event, values = window.read()
