@@ -48,15 +48,25 @@ while True:
         pd.options.display.max_rows = 20
         pd.options.display.max_columns = 6
         df = pd.read_csv("amazon_prime_users.csv")
-        new_df = df.drop('Customer Support Interactions',axis=1)
-  
+        df.pop('Customer Support Interactions')
+        df.pop('Feedback/Ratings')
+        df.pop('Engagement Metrics')
+        df.pop('Devices Used')
+        df.pop('Favorite Genres')
+        df.pop('Purchase History')
+        df.pop('Usage Frequency')
+        df.pop('Renewal Status')
+        df.pop('Payment Information')
+        df.pop('Subscription Plan')
+        df.pop('Membership End Date')
+        df.pop('Membership Start Date')
         sg.set_options(font= 'Consolas 14')
 
         layout = [
             [sg.Button('↩',font= 'Consolas 13')],
             [sg.Text('Dataframes')],
             [sg.Text('Datan över våra användare', text_color= "light grey")],
-            [sg.Table(values=new_df.values.tolist(), headings=df.columns.tolist(), display_row_numbers=True, auto_size_columns=False, col_widths=[10, 5], vertical_scroll_only=True)]
+            [sg.Table(values=df.values.tolist(), headings=df.columns.tolist(), display_row_numbers=False, auto_size_columns=True, vertical_scroll_only=True)]
         ]
 
         window = sg.Window('Dataframes', layout)
@@ -65,5 +75,26 @@ while True:
             event, values = window.read()
             if event == sg.WIN_CLOSED:
                 break
+
+    if event == 'Grafer':
+        window.close()
+
+        sg.set_options(font= 'Consolas 14')
+
+        layout = [
+            [sg.Button('↩',font= 'Consolas 13')],
+            [sg.Text('Visualiserad data.')],
+            [sg.Text('Här är datan visualiserad i olika tabeller / grafer.\nTryck på den information du vill se!', text_color= "light grey")],
+            [sg.Button('Kön'), sg.Button('Device Usage Patterns'), sg.Button()]
+
+        ]
+
+        window = sg.Window('Grafer', layout)
+
+        while True:
+            event, values = window.read()
+            if event == sg.WIN_CLOSED:
+                break
+
 
 window.close()
