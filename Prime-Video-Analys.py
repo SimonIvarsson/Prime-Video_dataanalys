@@ -1,7 +1,8 @@
 import PySimpleGUI as sg
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import pandas as pd
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 # GUI Layout
 sg.set_options(font= 'Consolas 14')
@@ -21,7 +22,7 @@ while True:
     event, values  = window.read()
 
     # Om användaren trycker om close stängs GUI ner
-    if event == sg.WIN_CLOSED or event == 'Cancel':
+    if event == sg.WIN_CLOSED:
         break
     
     if event == 'Information':
@@ -92,8 +93,41 @@ while True:
 
         while True:
             event, values = window.read()
+
             if event == sg.WIN_CLOSED:
                 break
+
+            if event == 'Kön':
+                df = pd.read_csv('amazon_prime_users.csv')
+            # Step 2: Create Bar Chart
+            def create_bar_chart(Gender):
+                plt.figure(figsize=(6, 4))
+                df[Gender].value_counts().plot(kind='bar')
+                plt.title('Number of Men and Women')
+                plt.xlabel('Gender')
+                plt.ylabel('Count')
+
+            # Step 3: Integrate with PySimpleGUI
+            layout = [
+                    [sg.Text('Andel män respektive kvinnor som använder Prime Video:')],
+                    [sg.Combo(df.columns, key='-COLUMN-', size=(20, 1))],
+                    [sg.Canvas(key='-CANVAS-')],
+                    [sg.Button('Plot Chart')]]
+
+            window = sg.Window('Gender Comparison Chart', layout, finalize=True)
+            canvas_elem = window['-CANVAS-'].TKCanvas
+
+            while True:
+                event, values = window.read()
+                if event in (sg.WINDOW_CLOSED, 'Exit'):
+                    break
+                elif event == 'Plot Chart':
+                    Gender = values['-COLUMN-']
+                    create_bar_chart(Gender)
+                    # Embed Matplotlib plot into PySimpleGUI window
+                    figure_canvas_agg = FigureCanvasTkAgg(plt.gcf(), master=canvas_elem)
+                    figure_canvas_agg.draw()
+                    figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
 
 
 window.close()
