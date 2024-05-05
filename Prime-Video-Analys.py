@@ -46,6 +46,7 @@ while True:
     if event == 'Dataframes':
         window.close()
         
+        # .pop tar bort den column som anges
         pd.options.display.max_rows = 20
         pd.options.display.max_columns = 6
         df = pd.read_csv("amazon_prime_users.csv")
@@ -86,7 +87,7 @@ while True:
             [sg.Button('↩',font= 'Consolas 13')],
             [sg.Text('Visualiserad data.')],
             [sg.Text('Här är datan visualiserad i olika tabeller / diagram.\nTryck på den information du vill se!', text_color= "light grey")],
-            [sg.Button('Kön', expand_x= True), sg.Button('Device Usage Patterns', expand_x= True), sg.Button('Favorit genrer', expand_x= True)]
+            [sg.Button('Kön', expand_x= True), sg.Button('Betalningsmetod', expand_x= True)]
         ]
 
         window = sg.Window('Diagram', layout)
@@ -99,35 +100,55 @@ while True:
 
             if event == 'Kön':
                 df = pd.read_csv('amazon_prime_users.csv')
-            # Step 2: Create Bar Chart
-            def create_bar_chart(Gender):
-                plt.figure(figsize=(6, 4))
-                df[Gender].value_counts().plot(kind='bar')
-                plt.title('Number of Men and Women')
-                plt.xlabel('Gender')
-                plt.ylabel('Count')
 
-            # Step 3: Integrate with PySimpleGUI
-            layout = [
-                    [sg.Text('Andel män respektive kvinnor som använder Prime Video:')],
-                    [sg.Combo(df.columns, key='-COLUMN-', size=(20, 1))],
+                gender_counts = df['Gender'].value_counts()
+
+                fig, ax = plt.subplots()
+                ax.bar(gender_counts.index, gender_counts.values, color=['blue', 'pink'])
+                ax.set_xlabel('Kön')
+                ax.set_ylabel('Mängd')
+                ax.set_title('Andel män respektive kvinnliga användare')
+
+                layout = [
                     [sg.Canvas(key='-CANVAS-')],
-                    [sg.Button('Plot Chart')]]
+                ]
 
-            window = sg.Window('Gender Comparison Chart', layout, finalize=True)
-            canvas_elem = window['-CANVAS-'].TKCanvas
+                window = sg.Window('Andel män respektive kvinnliga användare', layout, finalize=True)
+                canvas = FigureCanvasTkAgg(fig, master=window['-CANVAS-'].TKCanvas)
+                canvas.draw()
+                canvas.get_tk_widget().pack()
 
-            while True:
-                event, values = window.read()
-                if event in (sg.WINDOW_CLOSED, 'Exit'):
-                    break
-                elif event == 'Plot Chart':
-                    Gender = values['-COLUMN-']
-                    create_bar_chart(Gender)
-                    # Embed Matplotlib plot into PySimpleGUI window
-                    figure_canvas_agg = FigureCanvasTkAgg(plt.gcf(), master=canvas_elem)
-                    figure_canvas_agg.draw()
-                    figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
+                while True:
+                    event, values = window.read()
+                    if event == sg.WINDOW_CLOSED or event == 'Close':
+                        break
 
+                while True:
+                    event, values = window.read()
+                    if event in (sg.WINDOW_CLOSED):
+                        break
+            
+            if event == 'Betalningsmetod':
+                df = pd.read_csv('amazon_prime_users.csv')
+
+                payment_information = df['Payment Information'].value_counts()
+
+                fig, ax = plt.subplots()
+                ax.pie(payment_information, labels=payment_information.index, autopct='%1.1f%%', colors=['grey', 'lightblue', 'lightgreen'])
+                ax.set_title('Betalningsmetod')
+
+                layout = [
+                    [sg.Canvas(key='-CANVAS-')],
+                ]
+
+                window = sg.Window('Betalningsmetod', layout, finalize=True)
+                canvas = FigureCanvasTkAgg(fig, master=window['-CANVAS-'].TKCanvas)
+                canvas.draw()
+                canvas.get_tk_widget().pack()
+
+                while True:
+                    event, values = window.read()
+                    if event == sg.WINDOW_CLOSED:
+                        break
 
 window.close()
