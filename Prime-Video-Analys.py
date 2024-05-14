@@ -1,5 +1,4 @@
 import PySimpleGUI as sg
-import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
